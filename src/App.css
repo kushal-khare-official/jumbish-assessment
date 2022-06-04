@@ -1,0 +1,29 @@
+.App {
+  background: linear-gradient(
+    64.7deg,
+    rgb(142, 209, 252) 5.24%,
+    rgb(238, 238, 238) 42.01%
+  );
+  text-align: center;
+  min-height: 100vh;
+}
+
+.App-logo {
+  pointer-events: none;
+}
+
+.App-header {
+  width: 100%;
+  margin-left: auto;
+  box-sizing: border-box;
+  margin-right: auto;
+  display: block;
+  padding: 24px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.App-link {
+  color: #61dafb;
+}
