@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   AppBar,
   Accordion,
@@ -7,17 +7,19 @@ import {
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   Checkbox,
+  Fab,
   FormGroup,
   FormControlLabel,
   FormLabel,
+  Grid,
   IconButton,
   InputAdornment,
   List,
   ListItem,
   ListItemText,
+  Modal,
   Paper,
   Radio,
   RadioGroup,
@@ -25,13 +27,14 @@ import {
   StepLabel,
   StepContent,
   Stepper,
-  TextField,
   Toolbar,
   Typography,
 } from '@mui/material'
 import { ExpandMore } from '@mui/icons-material'
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 
 import logo from './logo.png'
+import delivery from './delivery.png'
 import './App.css'
 
 const allOrders = [
@@ -98,6 +101,7 @@ const allOrders = [
 ]
 
 const App = () => {
+  const [open, setOpen] = useState(false)
   const [activeStep, setActiveStep] = useState(0)
   const [number, setNumber] = useState('')
   const [orders, setOrders] = useState([])
@@ -111,6 +115,28 @@ const App = () => {
   const [time, setTime] = useState('')
   const [tip, setTip] = useState('')
 
+  useEffect(() => {
+    ValidatorForm.addValidationRule('isRadioSelected', (value) => {
+      if (value) return true
+      return false
+    })
+    return () => {
+      ValidatorForm.removeValidationRule('isRadioSelected')
+    }
+  })
+
+  const handleOpen = () => {
+    setOrders(
+      allOrders
+        .filter((order) => order.mobileNumber === number)
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    )
+    setActiveStep(1)
+    setOpen(true)
+  }
+
+  const handleClose = () => setOpen(false)
+
   const handleNext = () => {
     if (activeStep === 0)
       setOrders(
@@ -120,9 +146,8 @@ const App = () => {
             (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
           )
       )
-    if (activeStep === steps.length - 1)
-      // send Data to backend
-      setActiveStep(activeStep + 1)
+    // if (activeStep === steps.length - 1)  send Data to backend
+    setActiveStep(activeStep + 1)
   }
 
   const handleBack = () => {
@@ -139,7 +164,7 @@ const App = () => {
     setLandmark('')
     setCity('')
     setPinCode('')
-    setChecked('')
+    setChecked(false)
     setTime('')
     setTip('')
   }
@@ -152,17 +177,28 @@ const App = () => {
     {
       label: 'Enter Mobile Number',
       description: (
-        <TextField
+        <TextValidator
           label="Mobile Number"
-          id="outlined-start-adornment"
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
+          name="mobile number"
+          type="number"
           sx={{ m: 1, width: '30ch' }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">+91</InputAdornment>
             ),
           }}
-          value={number}
-          onChange={(e) => setNumber(e.target.value)}
+          validators={[
+            'required',
+            'minNumber:1000000000',
+            'maxNumber:9999999999',
+          ]}
+          errorMessages={[
+            'this field is required',
+            'enter a valid phone number',
+            'enter a valid phone number',
+          ]}
         />
       ),
     },
@@ -176,7 +212,7 @@ const App = () => {
               width: '100%',
             },
           }}
-          control={<Checkbox />}
+          control={<Checkbox validators={['required']} />}
           label={
             <Accordion expanded={expanded === i} onChange={handleChange(i)}>
               <AccordionSummary
@@ -225,23 +261,27 @@ const App = () => {
       label: 'Enter Delivery Address',
       description: (
         <Box textAlign="left">
-          <TextField
+          <TextValidator
             label="House Number / Apartment Number"
             sx={{ m: 1, width: '50ch' }}
             fullWidth
             value={addressLine1}
             onChange={(e) => setAddressLine1(e.target.value)}
+            validators={['required']}
+            errorMessages={['this field is required']}
           />
           <br />
-          <TextField
+          <TextValidator
             label="Building / Street Name"
             sx={{ m: 1, width: '50ch' }}
             fullWidth
             value={addressLine2}
             onChange={(e) => setAddressLine2(e.target.value)}
+            validators={['required']}
+            errorMessages={['this field is required']}
           />
           <br />
-          <TextField
+          <TextValidator
             label="Landmark (Optional)"
             sx={{ m: 1, width: '50ch' }}
             fullWidth
@@ -249,19 +289,27 @@ const App = () => {
             onChange={(e) => setLandmark(e.target.value)}
           />
           <br />
-          <TextField
+          <TextValidator
             label="City"
             sx={{ m: 1, width: '50ch' }}
             fullWidth
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            validators={['required']}
+            errorMessages={['this field is required']}
           />
           <br />
-          <TextField
+          <TextValidator
             label="Pin Code"
             sx={{ m: 1, width: '20ch' }}
             value={pinCode}
             onChange={(e) => setPinCode(e.target.value)}
+            validators={['required', 'minNumber:100000', 'maxNumber:999999']}
+            errorMessages={[
+              'this field is required',
+              'enter a valid pincode',
+              'enter a valid pincode',
+            ]}
           />
         </Box>
       ),
@@ -354,9 +402,10 @@ const App = () => {
               }
               label="Tip Delivery Guy"
             />
-            <TextField
+            <TextValidator
               label="Tip Amount"
               sx={{ m: 1, width: '30ch' }}
+              type="number"
               disabled={!checked}
               InputProps={{
                 startAdornment: (
@@ -365,6 +414,8 @@ const App = () => {
               }}
               value={tip}
               onChange={(e) => setTip(e.target.value)}
+              validators={checked ? ['required'] : []}
+              errorMessages={checked ? ['this field is required'] : []}
             />
           </FormGroup>
         </Box>
@@ -391,60 +442,168 @@ const App = () => {
         </Toolbar>
       </AppBar>
 
-      <Card sx={{ maxWidth: '700px', width: '90%', margin: 'auto' }}>
-        <CardContent>
-          <Stepper activeStep={activeStep} orientation="vertical">
-            {steps.map((step, index) => (
-              <Step key={step.label}>
-                <StepLabel
-                  optional={
-                    index === 4 ? (
-                      <Typography variant="caption">Optional</Typography>
-                    ) : null
-                  }
-                >
-                  {step.label}
-                </StepLabel>
-                <StepContent>
-                  {step.description}
-                  <Box sx={{ mb: 2 }}>
-                    <div>
-                      <Button
-                        variant="contained"
-                        onClick={handleNext}
-                        sx={{ mt: 1, mr: 1 }}
-                      >
-                        {index === steps.length - 1 ? 'Checkout' : 'Continue'}
-                      </Button>
-                      <Button
-                        disabled={index === 0}
-                        onClick={handleBack}
-                        sx={{ mt: 1, mr: 1 }}
-                      >
-                        Back
-                      </Button>
-                    </div>
-                  </Box>
-                </StepContent>
-              </Step>
-            ))}
-          </Stepper>
-          {activeStep === steps.length && (
-            <Paper square elevation={0} sx={{ p: 3 }}>
-              <Typography>
-                Your order with order number is <b>#{Date.now()}</b> has been
-                placed successfully.
-                <br />
-                Want to place another order??
-              </Typography>
-              <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                Place Another Order
-              </Button>
-            </Paper>
-          )}
-        </CardContent>
-        <CardActions></CardActions>
-      </Card>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <Typography
+            variant="h3"
+            align="left"
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 700,
+              padding: '2rem',
+            }}
+          >
+            Get your Orders delivered at Home
+          </Typography>
+          <Typography
+            align="left"
+            style={{
+              margin: '0px 0px 16px',
+              fontFamily: 'Montserrat',
+              lineHeight: 1.5,
+              fontWeight: 400,
+              fontSize: '24px',
+              color: 'rgb(124, 124, 124)',
+              padding: '0 2rem',
+            }}
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            <br /> Ut volutpat sollicitudin facilisis. Vestibulum convallis
+            quis.
+          </Typography>
+          <ValidatorForm
+            className="Form1"
+            onSubmit={handleOpen}
+            onError={(errors) => console.log(errors)}
+          >
+            <TextValidator
+              label="Mobile Number"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              name="mobile number"
+              type="number"
+              sx={{ m: 1, width: '30ch' }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">+91</InputAdornment>
+                ),
+              }}
+              validators={[
+                'required',
+                'minNumber:1000000000',
+                'maxNumber:9999999999',
+              ]}
+              errorMessages={[
+                'this field is required',
+                'enter a valid phone number',
+                'enter a valid phone number',
+              ]}
+            />
+            <Fab
+              variant="extended"
+              type="submit"
+              sx={{
+                m: 1,
+                backgroundColor: 'rgb(0, 147, 227)',
+                color: '#fff',
+                borderRadius: '8px',
+                '&:hover': {
+                  backgroundColor: 'rgb(0, 102, 158);',
+                },
+              }}
+            >
+              Get Home Delivery
+            </Fab>
+          </ValidatorForm>
+        </Grid>
+        <Grid item xs={0} sm={6}>
+          <img id="Delivery" src={delivery} alt="delivery" style={{ height: '80vh' }} />
+        </Grid>
+      </Grid>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{
+          margin: 0,
+          padding: 0,
+          width: '100vw',
+          height: '100vh',
+        }}
+      >
+        <Card
+          sx={{
+            position: 'absolute',
+            width: '90%',
+            maxWidth: '700px',
+            margin: 'auto',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <CardContent>
+            <Stepper activeStep={activeStep} orientation="vertical">
+              {steps.map((step, index) => (
+                <Step key={step.label}>
+                  <StepLabel
+                    optional={
+                      index === 4 ? (
+                        <Typography variant="caption">Optional</Typography>
+                      ) : null
+                    }
+                  >
+                    {step.label}
+                  </StepLabel>
+                  <StepContent>
+                    <ValidatorForm
+                      onSubmit={handleNext}
+                      onError={(errors) => console.log(errors)}
+                    >
+                      {step.description}
+                      <Box sx={{ mb: 2 }}>
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="submit"
+                            sx={{ mt: 1, mr: 1 }}
+                          >
+                            {index === steps.length - 1
+                              ? 'Checkout'
+                              : 'Continue'}
+                          </Button>
+                          <Button
+                            disabled={index === 0}
+                            onClick={handleBack}
+                            sx={{ mt: 1, mr: 1 }}
+                          >
+                            Back
+                          </Button>
+                        </div>
+                      </Box>
+                    </ValidatorForm>
+                  </StepContent>
+                </Step>
+              ))}
+            </Stepper>
+            {activeStep === steps.length && (
+              <Paper square elevation={0} sx={{ p: 3 }}>
+                <Typography>
+                  Your order with order number is <b>#{Date.now()}</b> has been
+                  placed successfully.
+                  <br />
+                  Want to place another order??
+                </Typography>
+                <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+                  Place Another Order
+                </Button>
+              </Paper>
+            )}
+          </CardContent>
+        </Card>
+      </Modal>
     </div>
   )
 }

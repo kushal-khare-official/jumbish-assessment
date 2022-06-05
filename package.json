@@ -1,6 +1,6 @@
 {
   "name": "jumbish-retail-shop",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.0",
@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-material-ui-form-validator": "^3.0.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
