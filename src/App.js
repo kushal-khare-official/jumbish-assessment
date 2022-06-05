@@ -33,72 +33,10 @@ import {
 import { ExpandMore } from '@mui/icons-material'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 
-import logo from './logo.png'
-import delivery from './delivery.png'
+import logo from './images/logo.png'
+import delivery from './images/delivery.png'
+import allOrders from './utils/orders.json'
 import './App.css'
-
-const allOrders = [
-  {
-    mobileNumber: '9554409188',
-    date: '04 June 2022 12:15:00',
-    items: [
-      {
-        id: 0,
-        name: 'Pepsi 2L',
-        MRP: 80,
-        quantity: 1,
-      },
-      {
-        id: 1,
-        name: 'Maggi',
-        MRP: 14,
-        quantity: 4,
-      },
-      {
-        id: 2,
-        name: 'Uncle Chips',
-        MRP: 10,
-        quantity: 5,
-      },
-      {
-        id: 3,
-        name: 'Dairy Milk',
-        MRP: 10,
-        quantity: 10,
-      },
-    ],
-  },
-  {
-    mobileNumber: '9554409188',
-    date: '04 June 2022 12:30:00',
-    items: [
-      {
-        id: 0,
-        name: 'Pepsi 2L',
-        MRP: 80,
-        quantity: 1,
-      },
-      {
-        id: 1,
-        name: 'Maggi',
-        MRP: 14,
-        quantity: 4,
-      },
-      {
-        id: 2,
-        name: 'Uncle Chips',
-        MRP: 10,
-        quantity: 5,
-      },
-      {
-        id: 3,
-        name: 'Dairy Milk',
-        MRP: 10,
-        quantity: 10,
-      },
-    ],
-  },
-]
 
 const App = () => {
   const [open, setOpen] = useState(false)
@@ -517,7 +455,12 @@ const App = () => {
           </ValidatorForm>
         </Grid>
         <Grid item xs={0} sm={6}>
-          <img id="Delivery" src={delivery} alt="delivery" style={{ height: '80vh' }} />
+          <img
+            id="Delivery"
+            src={delivery}
+            alt="delivery"
+            style={{ height: '80vh' }}
+          />
         </Grid>
       </Grid>
 
