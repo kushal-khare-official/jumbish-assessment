@@ -43,7 +43,67 @@
                 "id": 1,
                 "name": "Maggi",
                 "MRP": 14,
+                "quantity": 10
+            },
+            {
+                "id": 2,
+                "name": "Uncle Chips",
+                "MRP": 10,
+                "quantity": 5
+            },
+            {
+                "id": 3,
+                "name": "Dairy Milk",
+                "MRP": 10,
+                "quantity": 10
+            }
+        ]
+    },
+    {
+        "mobileNumber": "9005232661",
+        "date": "04 June 2022 12:15:00",
+        "items": [
+            {
+                "id": 0,
+                "name": "Pepsi 2L",
+                "MRP": 80,
+                "quantity": 1
+            },
+            {
+                "id": 1,
+                "name": "Maggi",
+                "MRP": 14,
                 "quantity": 4
+            },
+            {
+                "id": 2,
+                "name": "Uncle Chips",
+                "MRP": 10,
+                "quantity": 5
+            },
+            {
+                "id": 3,
+                "name": "Dairy Milk",
+                "MRP": 10,
+                "quantity": 5
+            }
+        ]
+    },
+    {
+        "mobileNumber": "9005232661",
+        "date": "04 June 2022 12:30:00",
+        "items": [
+            {
+                "id": 0,
+                "name": "Pepsi 2L",
+                "MRP": 80,
+                "quantity": 2
+            },
+            {
+                "id": 1,
+                "name": "Maggi",
+                "MRP": 14,
+                "quantity": 10
             },
             {
                 "id": 2,
