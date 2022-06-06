@@ -11,18 +11,19 @@ import {
   Checkbox,
   Fab,
   FormGroup,
+  FormControl,
   FormControlLabel,
-  FormLabel,
   Grid,
   IconButton,
   InputAdornment,
+  InputLabel,
   List,
   ListItem,
   ListItemText,
+  MenuItem,
   Modal,
   Paper,
-  Radio,
-  RadioGroup,
+  Select,
   Step,
   StepLabel,
   StepContent,
@@ -44,6 +45,7 @@ const App = () => {
   const [number, setNumber] = useState('')
   const [orders, setOrders] = useState([])
   const [expanded, setExpanded] = useState('')
+  const [name, setName] = useState('')
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')
   const [landmark, setLandmark] = useState('')
@@ -200,7 +202,18 @@ const App = () => {
       description: (
         <Box textAlign="left">
           <TextValidator
-            label="House Number / Apartment Number"
+            label="Name"
+            type="name"
+            sx={{ m: 1, width: '50ch' }}
+            fullWidth
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            validators={['required']}
+            errorMessages={['this field is required']}
+          />
+          <br />
+          <TextValidator
+            label="Address Line 1"
             sx={{ m: 1, width: '50ch' }}
             fullWidth
             value={addressLine1}
@@ -210,7 +223,7 @@ const App = () => {
           />
           <br />
           <TextValidator
-            label="Building / Street Name"
+            label="Address Line 2"
             sx={{ m: 1, width: '50ch' }}
             fullWidth
             value={addressLine2}
@@ -255,73 +268,28 @@ const App = () => {
     {
       label: 'Delivery Timing',
       description: (
-        <FormGroup>
-          <FormLabel id="demo-radio-buttons-group-label">
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">
             Choose a suitable Time Slots:
-          </FormLabel>
-          <RadioGroup
-            sx={{ flexDirection: 'row', justifyContent: 'space-evenly' }}
-            aria-labelledby="demo-radio-buttons-group-label"
-            name="radio-buttons-group"
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
             value={time}
+            label="Choose a suitable Time Slots:"
             onChange={(e) => setTime(e.target.value)}
           >
-            <FormControlLabel
-              sx={{ maxWidth: '200px', width: '90%' }}
-              value="0"
-              control={<Radio />}
-              label="9:00 AM - 10:00 AM"
-            />
-            <FormControlLabel
-              sx={{ maxWidth: '200px', width: '90%' }}
-              value="1"
-              control={<Radio />}
-              label="10:00 AM - 11:00 AM"
-            />
-            <FormControlLabel
-              sx={{ maxWidth: '200px', width: '90%' }}
-              value="2"
-              control={<Radio />}
-              label="11:00 AM - 12:00 PM"
-            />
-            <FormControlLabel
-              sx={{ maxWidth: '200px', width: '90%' }}
-              value="3"
-              control={<Radio />}
-              label="12:00 PM - 1:00 PM"
-            />
-            <FormControlLabel
-              sx={{ maxWidth: '200px', width: '90%' }}
-              value="4"
-              control={<Radio />}
-              label="1:00 PM - 2:00 PM"
-            />
-            <FormControlLabel
-              sx={{ maxWidth: '200px', width: '90%' }}
-              value="6"
-              control={<Radio />}
-              label="6:00 PM - 7:00 PM"
-            />
-            <FormControlLabel
-              sx={{ maxWidth: '200px', width: '90%' }}
-              value="7"
-              control={<Radio />}
-              label="7:00 PM - 8:00 PM"
-            />
-            <FormControlLabel
-              sx={{ maxWidth: '200px', width: '90%' }}
-              value="8"
-              control={<Radio />}
-              label="8:00 PM - 9:00 PM"
-            />
-            <FormControlLabel
-              sx={{ maxWidth: '200px', width: '90%' }}
-              value="9"
-              control={<Radio />}
-              label="9:00 PM - 10:00 PM"
-            />
-          </RadioGroup>
-        </FormGroup>
+            <MenuItem value={0}>9:00 AM - 10:00 AM</MenuItem>
+            <MenuItem value={1}>10:00 AM - 11:00 AM</MenuItem>
+            <MenuItem value={2}>11:00 AM - 12:00 PM</MenuItem>
+            <MenuItem value={3}>12:00 PM - 1:00 PM</MenuItem>
+            <MenuItem value={4}>1:00 PM - 2:00 PM</MenuItem>
+            <MenuItem value={5}>6:00 PM - 7:00 PM</MenuItem>
+            <MenuItem value={6}>7:00 PM - 8:00 PM</MenuItem>
+            <MenuItem value={7}>8:00 PM - 9:00 PM</MenuItem>
+            <MenuItem value={8}>9:00 PM - 10:00 PM</MenuItem>
+          </Select>
+        </FormControl>
       ),
     },
     {
