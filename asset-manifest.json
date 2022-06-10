@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/jumbish-retail-shop/static/css/main.f628e98b.css",
-    "main.js": "/jumbish-retail-shop/static/js/main.890046f2.js",
-    "static/media/delivery.png": "/jumbish-retail-shop/static/media/delivery.533f429145938467c00c.png",
-    "index.html": "/jumbish-retail-shop/index.html",
-    "main.f628e98b.css.map": "/jumbish-retail-shop/static/css/main.f628e98b.css.map",
-    "main.890046f2.js.map": "/jumbish-retail-shop/static/js/main.890046f2.js.map"
+    "main.css": "/jumbish-assessment/static/css/main.f628e98b.css",
+    "main.js": "/jumbish-assessment/static/js/main.e6d52a3f.js",
+    "static/media/delivery.png": "/jumbish-assessment/static/media/delivery.533f429145938467c00c.png",
+    "index.html": "/jumbish-assessment/index.html",
+    "main.f628e98b.css.map": "/jumbish-assessment/static/css/main.f628e98b.css.map",
+    "main.e6d52a3f.js.map": "/jumbish-assessment/static/js/main.e6d52a3f.js.map"
   },
   "entrypoints": [
     "static/css/main.f628e98b.css",
-    "static/js/main.890046f2.js"
+    "static/js/main.e6d52a3f.js"
   ]
 }
